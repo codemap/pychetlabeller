@@ -13,22 +13,22 @@ import svgwrite
 
 from PyQt4 import QtGui, QtCore
 from shapely.geometry import Point, box # Polygon
-from .labeller_ui import Ui_MainWindow
+from pychetlabeller.labeller_ui import Ui_MainWindow
 
 __author__ = 'suchet'
-__date__ = '04/08/16' 
+__date__ = '04/08/16'
 
 my_colormap = [\
-[137, 0, 255], 
-[255, 0, 0], 
-[179, 179, 0], 
-[0, 255, 151], 
-[0, 193, 255], 
-[0, 27, 255], 
-[137, 0, 255], 
-[255, 165, 0], 
-[255, 0, 41], 
-[13, 255, 0], 
+[137, 0, 255],
+[255, 0, 0],
+[179, 179, 0],
+[0, 255, 151],
+[0, 193, 255],
+[0, 27, 255],
+[137, 0, 255],
+[255, 165, 0],
+[255, 0, 41],
+[13, 255, 0],
 [255, 0, 207]] * 20 # Dirty hack to cater for more than 10 objects - will have same colours
 label_dataset = None
 
@@ -177,7 +177,7 @@ class Tool_Circle(Tool):
                 parent.ui.item_label_txt.setText(keystr)
             # if keystr and any([keystr == chr(i) for i in xrange(ord('0'), 1 + ord('9'))]):
             #     self.label = int(keystr)
-                
+
 
 class Tool_Rectangle(Tool):
     '''This tool creates a rectangle when clicked'''
@@ -203,7 +203,7 @@ class Tool_Rectangle(Tool):
         elif modifiers == QtCore.Qt.NoModifier and button == QtCore.Qt.LeftButton:
             if self.mode == Tool_Rectangle.MODE_CENTRE:
                 point = (self.position.x() - self.dx // 2, self.position.y() - self.dy // 2)
-            parent.add_datum(LabelRectangle(self.label, point[0], point[1], self.dx, self.dy, 
+            parent.add_datum(LabelRectangle(self.label, point[0], point[1], self.dx, self.dy,
                 label_name=self.labelmap[ [x['object_id'] for x in self.labelmap].index(self.label) ]['object_name']))
     def wheel(self, parent, QWheelEvent):
         delta = QWheelEvent.delta()
@@ -273,7 +273,7 @@ class Tool_TransformView(Tool):
             # parent.setDragMode(QtGui.QGraphicsView.NoDrag)
             parent.setFlag(QtGui.QGraphicsItem.ItemIsMovable, True)
     def wheel(self, parent, QWheelEvent):
-        delta = np.sign(QWheelEvent.delta()) * 0.1 
+        delta = np.sign(QWheelEvent.delta()) * 0.1
         parent.zoom(delta)
     def paint(self, parent, QPainter, QStyleOptionGraphicsItem, QWidget):
         pass
@@ -323,7 +323,7 @@ class LabelRectangle(LabelShape):
         x, y, dx, dy = self.get_rect_data()
         if isinstance(view, QtGui.QTreeWidgetItem):
             # NOTE: It is important not to change the first field as it is used for lookup
-            view.setText(0, str(self.id)) 
+            view.setText(0, str(self.id))
             view.setText(1, "(%d, %d)" % (x, y))
             view.setText(2, "(%d, %d)" % (dx, dy))
             view.setText(3, str(self.label))
@@ -350,7 +350,7 @@ class LabelCircle(LabelShape):
     def populate_view(self, view, **kwargs):
         if isinstance(view, QtGui.QTreeWidgetItem):
             # NOTE: It is important not to change the first field as it is used for lookup
-            view.setText(0, str(self.id)) 
+            view.setText(0, str(self.id))
             view.setText(1, "(%d, %d)" % (self.shape.x, self.shape.y))
             view.setText(2, str(self.shape.radius))
             view.setText(3, str(self.label))
@@ -402,7 +402,7 @@ class ObjectDrawPanel(QtGui.QGraphicsPixmapItem):
         else:
             raise ValueError('Input tool {} not valid'.format(tool))
         self.tool.labelmap = labelmap
-        
+
         self.num_labels = len(labelmap)
         self.pen = None
         #TODO: Tidy brushes
@@ -690,9 +690,7 @@ class MainWindow(QtGui.QMainWindow):
         self.change_brightness_contrast()
         self.scene.addItem(self.imagePanel)
         self.ui.graphicsView.setScene(self.scene)
-        self.ui.graphicsView.setSceneRect(0, 0, \
-            self.ui.graphicsView.size().width() - 10, \
-            self.ui.graphicsView.size().height() - 10)
+        self.ui.graphicsView.setSceneRect(0, 0, pixmap.width() - 10, pixmap.height() - 10)
     def populateTree(self):
         """ Update the tree when a new annotation is added """
         self.ui.treeWidget.clear()
