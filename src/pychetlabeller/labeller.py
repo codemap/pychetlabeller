@@ -133,7 +133,7 @@ class Tool_Circle(Tool):
         super(Tool_Circle, self).__init__()
         self.radius = 20
         self.label = 1
-        self.radius_scroll_delta = 2
+        self.radius_scroll_delta = 1
     def click(self, parent, button, release=False):
         modifiers = QtGui.QApplication.keyboardModifiers()
         point = (self.position.x(), self.position.y())
