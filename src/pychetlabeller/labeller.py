@@ -158,7 +158,9 @@ class Tool_Circle(Tool):
             , 2 * self.radius, 2 * self.radius)
     def enable(self, parent):
         # parent.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        parent.setCursor(QtGui.QCursor(QtCore.Qt.CrossCursor))
+        # parent.setCursor(QtGui.QCursor(QtCore.Qt.CrossCursor))
+        cursor = QtGui.QCursor(QtGui.QPixmap('resources/cursor.png'), 25, 25)
+        parent.setCursor(cursor)
     def key_down(self, parent, event):
         key = event.key()
         if key == QtCore.Qt.Key_Backspace and len(label_dataset.data):
